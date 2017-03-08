@@ -6,7 +6,7 @@ A angular2 wrapper for intro.js
 This service is an effort to make intro.js avaiable for Angular2.
 <p>
 <p>
-    If you need an angular1 use: (angular-intro.js)[https://github.com/mendhak/angular-intro.js], this component is almost aside the framework.
+    If you need an angular1 use: [angular-intro.js](https://github.com/mendhak/angular-intro.js), the service is almost the same aside the framework.
 </p>
 
 #Basic
@@ -24,6 +24,8 @@ This service is an effort to make intro.js avaiable for Angular2.
 #Special Thanks
 [@mendhak from angular-intro.js](https://github.com/mendhak/angular-intro.js) for allow me to upgrade the code from js to typescript.
 
+
+<hr>
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.1.
 
 ## Development server
