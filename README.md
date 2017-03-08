@@ -1,6 +1,28 @@
 # Ng2Introjs
 
-A wrapper for Angular2
+A angular2 wrapper for intro.js
+
+<p>
+This service is an effort to make intro.js avaiable for Angular2.
+<p>
+<p>
+    If you need an angular1 use: (angular-intro.js)[https://github.com/mendhak/angular-intro.js], this component is almost aside the framework.
+</p>
+
+#Basic
+ It's a WIP service, don't use on production
+
+<code>
+    import { IntrojsService } from './ng2-introjs/ng-introjs.service';
+</code>
+
+
+#Credits: 
+ 
+[usabilica team](https://github.com/usablica/intro.js/)
+
+#Special Thanks
+[@mendhak from angular-intro.js](https://github.com/mendhak/angular-intro.js) for allow me to upgrade the code from js to typescript.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.1.
 
@@ -27,3 +49,4 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+

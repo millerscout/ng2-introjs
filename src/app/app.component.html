@@ -1,3 +1,33 @@
-<h1>
-  {{title}}
-</h1>
+<div class="container-narrow">
+		    <div class="masthead">
+		        <ul id="step5" class="nav nav-pills pull-right">
+		            <li><a href="https://github.com/millerscout/ng2-introjs/releases"><i class='icon-black icon-download-alt'></i> Download</a></li>
+		            <li><a href="https://github.com/millerscout/ng2-introjs">Github</a></li>
+		        </ul>
+		        <h3 class="muted">ng2-introjs</h3>
+		    </div>
+
+		    <div class="jumbotron">
+		        <h1 id="step1">Angular2 Intro.js</h1>
+		        <p id="step4" class="lead">Angular2 service for <a href="http://usablica.github.io/intro.js/" onclick="window.open(this.href);return false;">intro.js</a></p>
+		        <a  ng-intro-disable-button class="btn btn-large btn-success">Demo</a>
+		        <a  ng-intro-disable-button class="btn btn-large btn-success">Start at step 3</a>
+		        
+		        <a style="z-index: 100000002;position: relative;" class="btn btn-large btn-success" ng-click="clearAndStartNewIntro();">Replace current intro using the service</a>
+					
+		    </div>
+
+		    <div class="row-fluid marketing">
+		        <div id="step2" class="span6">
+		            <h4>Setup</h4>
+		            <p>A Js is not avaiable for the moment, include the TS on your build</p>
+					<p>
+						import the service on your project like:
+					</p>
+					<code>
+						import {{'{'}} IntrojsService } from './ng2-introjs/ng-introjs.service';
+					</code>
+		        </div>
+
+		    </div>
+</div>

@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { IntrojsDirective } from '../../ng-intro/ng-introjs.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    IntrojsDirective
   ],
   imports: [
     BrowserModule,

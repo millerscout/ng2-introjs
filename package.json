@@ -1,6 +1,6 @@
 {
   "name": "ng2-introjs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A intro.js Wrapper for Angular2",
   "license": "AGPL-3.0",
   "scripts": {
@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^2.4.0",
     "@angular/platform-browser-dynamic": "^2.4.0",
     "@angular/router": "^3.4.0",
+    "@types/intro.js": "^2.4.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.1.0",
     "zone.js": "^0.7.6"
@@ -43,7 +44,7 @@
     "tslint": "~4.4.2",
     "typescript": "~2.0.0"
   },
-  "author": "Antonio M S S Jr.",  
+  "author": "Antonio M S S Jr.",
   "bugs": {
     "url": "https://github.com/millerscout/ng2-introjs/issues"
   },
@@ -51,13 +52,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://millerscout@github.com/millerscout/ng2-introjs.git"
-  },  
+  },
   "keywords": [
     "intro.js",
-	"guide",
-	"ng2-intro.js",
-	"ng2-introjs",
-	"ng2-intro.component"
-	
+    "guide",
+    "ng2-intro.js",
+    "ng2-introjs",
+    "ng2-intro.component"
   ]
 }
