@@ -1,182 +1,183 @@
+
+//Uses https://introjs.com
 import { Injectable } from '@angular/core';
 import { IntroJs } from 'intro.js';
 
-export enum introStatus{
+export enum introStatus {
   open,
   closed
 }
 
-export interface IIntrojsService{
-  	intro: IntroJs.IntroJs,
-		addListener(name: introStatus, callback :Function) :void
-		removeListener(name: introStatus): void
-		setOptions: IntroJs.Options,
-		start(stepId?: number): IntroJs.IntroJs,
-		exit(): IntroJs.IntroJs,
-		clear(callback: Function): IntroJs.IntroJs,
+export interface IIntrojsService {
+  intro: IntroJs;
+  addListener(name: introStatus, callback: () => void): void;
+  removeListener(name: introStatus): void;
+  setOptions(options: IntroJs.Options): IntroJs;
+  start(stepId?: number): IntroJs;
+  exit(): IntroJs;
+  clear(callback: () => void): IntroJs;
 
-		addHints(): IntroJs.IntroJs,
-		showHint(hintIdx: number):  IntroJs.IntroJs,
-		showHints():  IntroJs.IntroJs,
-		hideHint(hintIdx:number):  IntroJs.IntroJs,
-		hideHints(): IntroJs.IntroJs
+  addHints(): IntroJs;
+  showHint(hintIdx: number): IntroJs;
+  showHints(): IntroJs;
+  hideHint(hintIdx: number): IntroJs;
+  hideHints(): IntroJs;
 
-		previous(): IntroJs.IntroJs,
-		next(): IntroJs.IntroJs,
+  previous(): IntroJs;
+  next(): IntroJs;
 
-		refresh(): IntroJs.IntroJs,
+  refresh(): IntroJs;
 
-		onComplete(callback: Function)		: void
-		onExit(callback: Function)			: void
-		onBeforeChange(callback: Function)	: void
-		onAfterChange(callback: Function)	: void
-		onChange(callback: Function)		: void
-		onHintClick(callback: Function)		: void
-		onHintClose(callback: Function)		: void
-		onHintsAdded(callback: Function)	: void
+  onComplete(callback: () => void): void;
+  onExit(callback: () => void): void;
+  onBeforeChange(callback: (element: HTMLElement) => void): void;
+  onAfterChange(callback: (element: HTMLElement) => void): void;
+  onChange(callback: (element: HTMLElement) => void): void;
+  onHintClick(callback: (element: HTMLElement) => void): void;
+  onHintClose(callback: (stepId: number) => void): void;
+  onHintsAdded(callback: () => void): void;
 }
 @Injectable()
-export class IntrojsService implements IIntrojsService{
+export class IntrojsService implements IIntrojsService {
+  public intro: IntroJs;
+  private notifyList: {[index: number]: (status: introStatus) => void} = [];
 
-  private notifyList = [];
-  public intro : IntroJs.IntroJs;
-
-  private isFunction(func){
-    return typeof func === "function"
-  }
   constructor() {
-      this.intro = introJs();
-   }
-  
-  ///adds into notifyList, if there's a valid callback.
-	addListener(name:introStatus,  cb: Function){
+    this.intro = introJs();
+  }
 
-		if(this.isFunction(cb))
-			this.notifyList[name] = cb;
-	}
-	//remove from this.notifyList.
-	removeListener(name:introStatus){
-		delete this.notifyList[name];
-	}
+  //adds into notifyList, if there's a valid callback.
+  public addListener(name: introStatus, cb: () => void): void {
+    if (this.isFunction(cb)) {
+      this.notifyList[name] = cb;
+    }
+  }
 
-	///iterate through this.notifyList and call each callback.
-	private notifyListeners(status : introStatus){
-		for(var key in this.notifyList){
-			if(this.notifyList.hasOwnProperty(key)){
-				if(this.isFunction(this.notifyList[key]))
-					this.notifyList[key](status);
-			}
-		}
-	}
+  //remove from this.notifyList.
+  public removeListener(name: introStatus): void {
+    delete this.notifyList[name];
+  }
 
-	setOptions(options: IntroJs.Options){
-		return this.intro.setOptions(options);
-	}
+  public setOptions(options: IntroJs.Options): IntroJs {
+    return this.intro.setOptions(options);
+  }
 
-	start(step?:number){
-		if (typeof (step) === 'number') {
-				this.intro.start().goToStep(step);
-			} else {
-				this.intro.start();
-			}
-			this.notifyListeners(introStatus.open);
-			
-			return this.intro;
-	}
+  public start(step?: number): IntroJs {
+    if (typeof (step) === 'number') {
+      this.intro.start().goToStep(step);
+    } else {
+      this.intro.start();
+    }
+    this.notifyListeners(introStatus.open);
 
-	exit(){
-		this.notifyListeners(introStatus.closed);
-		return this.intro.exit();
-	}
+    return this.intro;
+  }
 
-	clear(cb:Function){
-		if(typeof(this.intro) !=='undefined')
-				this.intro.exit();
-		
-		this.intro = introJs();
-		
-		this.notifyListeners(introStatus.closed);
-		
-		if(this.isFunction(cb)) cb();
-		
-		return this.intro;
-	}
+  public exit(): IntroJs {
+    this.notifyListeners(introStatus.closed);
+    return this.intro.exit();
+  }
 
-	addHints(){
-		return this.intro.addHints();
-	}
-	showHint(hintIndex: number){
-		return this.intro.showHint(hintIndex);
-	}
-	showHints(){
-		return this.intro.showHints();
-	}
+  public clear(cb: () => void): IntroJs {
+    if (typeof this.intro !== 'undefined') {
+      this.intro.exit();
+    }
+    this.intro = introJs();
+    this.notifyListeners(introStatus.closed);
+    if (this.isFunction(cb)) { cb(); }
+    return this.intro;
+  }
 
-	hideHint(hintIndex: number){
-		return this.intro.hideHint(hintIndex);
-	}
+  public addHints(): IntroJs {
+    return this.intro.addHints();
+  }
+  public showHint(hintIndex: number): IntroJs {
+    return this.intro.showHint(hintIndex);
+  }
+  public showHints(): IntroJs {
+    return this.intro.showHints();
+  }
 
-	hideHints(){
-		return this.intro.hideHints();
-	}
+  public hideHint(hintIndex: number): IntroJs {
+    return this.intro.hideHint(hintIndex);
+  }
 
-	previous(){
-			this.notifyListeners(introStatus.open);
-			return this.intro.previousStep();
-	}
-	next(){
-		this.notifyListeners(introStatus.open);
-		return this.intro.nextStep();
-			
-	}
+  public hideHints(): IntroJs {
+    return this.intro.hideHints();
+  }
 
-	refresh(){
-		return this.intro.refresh();
-	}
+  public previous(): IntroJs {
+    this.notifyListeners(introStatus.open);
+    return this.intro.previousStep();
+  }
+  public next(): IntroJs {
+    this.notifyListeners(introStatus.open);
+    return this.intro.nextStep();
+  }
 
-	onComplete(cb:Function){
-		return this.intro.oncomplete(()=> {
-				if(this.isFunction(cb)) cb();
-				this.notifyListeners(introStatus.closed);
-			});
-	}
-	onExit(cb: Function){
-		return this.intro.onexit(()=> {
-			this.notifyListeners(introStatus.closed);
-			if(this.isFunction(cb)) cb();
-		});
-	}
-	onBeforeChange(cb:Function){
-			return this.intro.onbeforechange(()=>{
-				if(this.isFunction(cb)) cb();
-			});
-	}
-	onChange(cb:Function){
-		return this.intro.onchange(()=> {
-			if(this.isFunction(cb)) cb();
-		});
-	}
-	onAfterChange(cb:Function){
-		return this.intro.onafterchange(()=> {
-			if(this.isFunction(cb)) cb();
-		});
-	}
+  public refresh(): IntroJs {
+    return this.intro.refresh();
+  }
 
-	onHintClick(cb:Function){
-		return this.intro.onhintclick(()=> {
-			if(this.isFunction(cb)) cb();
-		});
-	}
+  public onComplete(cb: () => void): IntroJs {
+    return this.intro.oncomplete(() => {
+      if (this.isFunction(cb)) { cb(); }
+      this.notifyListeners(introStatus.closed);
+    });
+  }
+  public onExit(cb: () => void): IntroJs {
+    return this.intro.onexit(() => {
+      this.notifyListeners(introStatus.closed);
+      if (this.isFunction(cb)) { cb(); }
+    });
+  }
+  public onBeforeChange(cb: (element: HTMLElement) => void): IntroJs {
+    return this.intro.onbeforechange((element: HTMLElement) => {
+      if (this.isFunction(cb)) { cb(element); }
+    });
+  }
+  public onChange(cb: (element: HTMLElement) => void): IntroJs {
+    return this.intro.onchange((element: HTMLElement) => {
+      if (this.isFunction(cb)) { cb(element); }
+    });
+  }
+  public onAfterChange(cb: (element: HTMLElement) => void): IntroJs {
+    return this.intro.onafterchange((element: HTMLElement) => {
+      if (this.isFunction(cb)) { cb(element); }
+    });
+  }
 
-	onHintClose(cb:Function){
-		return this.intro.onhintclose( ()=> {
-			if(this.isFunction(cb)) cb();
-		});
-	}
-	onHintsAdded(cb:Function){
-		return this.intro.onhintclose(()=> {
-			if(this.isFunction(cb)) cb();
-		});
-	}
+  public onHintClick(cb: (element: HTMLElement) => void): IntroJs {
+    return this.intro.onhintclick((element: HTMLElement) => {
+      if (this.isFunction(cb)) { cb(element); }
+    });
+  }
+
+  public onHintClose(cb: (stepId: number) => void): IntroJs {
+    return this.intro.onhintclose((stepId: number) => {
+      if (this.isFunction(cb)) { cb(stepId); }
+    });
+  }
+  public onHintsAdded(cb: () => void): IntroJs {
+    return this.intro.onhintsadded(() => {
+      if (this.isFunction(cb)) { cb(); }
+    });
+  }
+
+  // tslint:disable-next-line:no-any  --  This rule is ok to disable here because we need to allow anything in to determine the type
+  private isFunction(func: any): boolean {
+    return typeof func === 'function';
+  }
+
+  //iterate through this.notifyList and call each callback.
+  private notifyListeners(status: introStatus): void {
+    for (const key in this.notifyList) {
+      if (this.notifyList.hasOwnProperty(key)) {
+        if (this.isFunction(this.notifyList[key])) {
+          this.notifyList[key](status);
+        }
+      }
+    }
+  }
 
 }
